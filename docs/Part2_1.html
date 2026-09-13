@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,6 +10,9 @@
 
 <title>Partie 2 Construction du modèle hiérarchique bayésien version 1 – Projet Model hiérarchique bayesien pour l’écologie</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -72,10 +75,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-b40c13d1a340c1202815d47d89cb925e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-916b84f082b5c35a3380e3e38e0f0a11.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -105,7 +108,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -118,7 +121,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -182,7 +185,7 @@ window.Quarto = {
 <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="https://ndhviet.wixsite.com/hviet-portfolio"> 
+    <a class="nav-link" href="https://hoangviet1810.github.io/"> 
 <span class="menu-text">Portfolio de Viet</span></a>
   </li>  
   <li class="nav-item compact">
@@ -270,7 +273,7 @@ Y_{i,j} \mid \lambda_i \sim \text{Poisson}(\lambda_i),
 <section id="extraction-des-données" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Extraction des données</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#                   CHARGEMENT ET PRÉ-TRAITEMENT DES DONNÉES</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rgbif)</span>
@@ -295,26 +298,26 @@ Y_{i,j} \mid \lambda_i \sim \text{Poisson}(\lambda_i),
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> summary_table</span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>i <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">factor</span>(df<span class="sc">$</span>year))</span>
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>j <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">factor</span>(df<span class="sc">$</span>stateProvince))</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>df[, <span class="fu">c</span>(<span class="st">"year"</span>, <span class="st">"stateProvince"</span>, <span class="st">"i"</span>, <span class="st">"j"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>df[, <span class="fu">c</span>(<span class="st">"year"</span>, <span class="st">"stateProvince"</span>, <span class="st">"i"</span>, <span class="st">"j"</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 89 × 4
+<pre><code># A tibble: 94 × 4
     year stateProvince                  i     j
    &lt;int&gt; &lt;chr&gt;                      &lt;int&gt; &lt;int&gt;
- 1  2014 Languedoc-Roussillon           1    12
- 2  2015 Provence-Alpes-Côte d'Azur     2    18
- 3  2016 Provence-Alpes-Côte d'Azur     3    18
- 4  2017 Languedoc-Roussillon           4    12
- 5  2017 Midi-Pyrénées                  4    14
- 6  2018 Languedoc-Roussillon           5    12
- 7  2018 Midi-Pyrénées                  5    14
- 8  2019 Aquitaine                      6     2
- 9  2019 Corse                          6     8
-10  2019 Languedoc-Roussillon           6    12
-# ℹ 79 more rows</code></pre>
+ 1  2017 Languedoc-Roussillon           1    13
+ 2  2017 Midi-Pyrénées                  1    16
+ 3  2018 Languedoc-Roussillon           2    13
+ 4  2018 Midi-Pyrénées                  2    16
+ 5  2019 Aquitaine                      3     2
+ 6  2019 Corse                          3     8
+ 7  2019 Languedoc-Roussillon           3    13
+ 8  2019 Provence-Alpes-Côte d'Azur     3    20
+ 9  2019 Rhône-Alpes                    3    23
+10  2020 Aquitaine                      4     2
+# ℹ 84 more rows</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#                   CHARGEMENT ET PRÉ-TRAITEMENT DES DONNÉES</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcul des agrégats annuels (données synthétiques par année)</span></span>
@@ -329,13 +332,13 @@ Y_{i,j} \mid \lambda_i \sim \text{Poisson}(\lambda_i),
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Extraction sous forme de vecteurs pour le modèle</span></span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> df_annual<span class="sc">$</span>Y_sum</span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>J <span class="ot">&lt;-</span> df_annual<span class="sc">$</span>J_counts</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>I <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df_annual) <span class="co"># Nombre total d'années d'observation (généralement 12)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>I <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df_annual) <span class="co"># Nombre total d'années d'observation (généralement 12)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="la-fonction-de-log-posteriori" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> La fonction de log-posteriori</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>log_posterior <span class="ot">&lt;-</span> <span class="cf">function</span>(Z, Y, J, mu, gamma) { </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>log_posterior <span class="ot">&lt;-</span> <span class="cf">function</span>(Z, Y, J, mu, gamma) { </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  sigma2 <span class="ot">&lt;-</span> <span class="fu">exp</span>(gamma)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Terme 1: Vraisemblance de Poisson</span></span>
@@ -352,13 +355,13 @@ Y_{i,j} \mid \lambda_i \sim \text{Poisson}(\lambda_i),
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(res) <span class="sc">||</span> <span class="fu">is.infinite</span>(res)) <span class="fu">return</span>(<span class="sc">-</span><span class="fl">1e20</span>) </span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="les-fonctions-de-gradients" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Les fonctions de gradients</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       Gradient de l'Énergie Potentielle U(theta) = -log_posterior</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcul du gradient de l'énergie (nabla U) pour l'algorithme HMC.</span></span>
@@ -384,13 +387,13 @@ Y_{i,j} \mid \lambda_i \sim \text{Poisson}(\lambda_i),
 <span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  sigma2 <span class="ot">&lt;-</span> <span class="fu">exp</span>(gamma)</span>
 <span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  I <span class="ot">&lt;-</span> <span class="fu">length</span>(Z)</span>
 <span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="sc">-</span><span class="fu">sum</span>((Z <span class="sc">-</span> mu)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> sigma2) <span class="sc">+</span> I <span class="sc">/</span> <span class="dv">2</span> <span class="sc">+</span> <span class="fu">exp</span>(gamma) <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="algorithme-hamiltonian-monte-carlo-avec-méthode-de-leapfrog" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Algorithme Hamiltonian Monte Carlo avec méthode de leapfrog</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#                 MOTEUR PHYSIQUE : HAMILTONIAN MONTE CARLO</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#                          1. Algorithme Leapfrog</span></span>
@@ -425,10 +428,10 @@ Y_{i,j} \mid \lambda_i \sim \text{Poisson}(\lambda_i),
 <span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>  P_gamma <span class="ot">&lt;-</span> P_gamma <span class="sc">-</span> <span class="fl">0.5</span> <span class="sc">*</span> eps <span class="sc">*</span> <span class="fu">f_grad_gamma</span>(Z, mu, gamma)</span>
 <span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">Z =</span> Z, <span class="at">mu =</span> mu, <span class="at">gamma =</span> gamma, <span class="at">P_Z =</span> P_Z, <span class="at">P_mu =</span> P_mu, <span class="at">P_gamma =</span> P_gamma))</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#              Fonction principal Hamiltonian Monte Carlo </span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>HMC_step_MC <span class="ot">&lt;-</span> <span class="cf">function</span>(Z, mu, gamma, Y, J, eps, L, lp_func, f_grad_Z, f_grad_mu, f_grad_gamma) {</span>
@@ -455,10 +458,10 @@ Y_{i,j} \mid \lambda_i \sim \text{Poisson}(\lambda_i),
 <span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
 <span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">Z =</span> Z, <span class="at">mu =</span> mu, <span class="at">gamma =</span> gamma, <span class="at">accepted =</span> <span class="cn">FALSE</span>))</span>
 <span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Fonction pour exécuter une chaîne MCMC (Hamiltonian Monte Carlo)</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>run_chain <span class="ot">&lt;-</span> <span class="cf">function</span>(id, n_iter, Y, J, eps, L) {</span>
@@ -519,13 +522,13 @@ Y_{i,j} \mid \lambda_i \sim \text{Poisson}(\lambda_i),
 <span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">mu =</span> mu_trace, <span class="at">sigma =</span> sigma_trace, <span class="at">Z =</span> Z_trace, <span class="at">lp =</span> lp_trace, <span class="at">acc_rate =</span> final_acc_rate))</span>
 <span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>  <span class="co">#return(list(mu = mu_trace, sigma = sigma_trace, Z = Z_trace, lp = lp_trace))</span></span>
-<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="diagnostics-de-convergence-et-performances" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> DIAGNOSTICS DE CONVERGENCE ET PERFORMANCES</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   Main de lancement de la Simulation MCMC (Multi-chaînes)</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -547,47 +550,47 @@ Y_{i,j} \mid \lambda_i \sim \text{Poisson}(\lambda_i),
 <span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  end_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
 <span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Chaîne %d terminée en %.2f minutes.</span><span class="sc">\n</span><span class="st">"</span>, i, <span class="fu">as.numeric</span>(end_time <span class="sc">-</span> start_time, <span class="at">units=</span><span class="st">"mins"</span>)))</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Exécution de la Chaîne 1...
-  Chaîne 1 | Progression : 25000 / 100000 (25%) | Taux d'acc. : 98.6%
-  Chaîne 1 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.6%
+  Chaîne 1 | Progression : 25000 / 100000 (25%) | Taux d'acc. : 98.7%
+  Chaîne 1 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.7%
   Chaîne 1 | Progression : 75000 / 100000 (75%) | Taux d'acc. : 98.6%
   Chaîne 1 | Progression : 100000 / 100000 (100%) | Taux d'acc. : 98.6%
-=&gt; Chaîne 1 terminée avec succès. Taux d'acceptation final : 98.59%
-Chaîne 1 terminée en 1.01 minutes.
+=&gt; Chaîne 1 terminée avec succès. Taux d'acceptation final : 98.63%
+Chaîne 1 terminée en 0.85 minutes.
 Exécution de la Chaîne 2...
   Chaîne 2 | Progression : 25000 / 100000 (25%) | Taux d'acc. : 98.5%
-  Chaîne 2 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.6%
-  Chaîne 2 | Progression : 75000 / 100000 (75%) | Taux d'acc. : 98.6%
-  Chaîne 2 | Progression : 100000 / 100000 (100%) | Taux d'acc. : 98.6%
-=&gt; Chaîne 2 terminée avec succès. Taux d'acceptation final : 98.63%
-Chaîne 2 terminée en 0.99 minutes.
+  Chaîne 2 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.5%
+  Chaîne 2 | Progression : 75000 / 100000 (75%) | Taux d'acc. : 98.5%
+  Chaîne 2 | Progression : 100000 / 100000 (100%) | Taux d'acc. : 98.5%
+=&gt; Chaîne 2 terminée avec succès. Taux d'acceptation final : 98.54%
+Chaîne 2 terminée en 0.85 minutes.
 Exécution de la Chaîne 3...
   Chaîne 3 | Progression : 25000 / 100000 (25%) | Taux d'acc. : 98.6%
   Chaîne 3 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.6%
   Chaîne 3 | Progression : 75000 / 100000 (75%) | Taux d'acc. : 98.6%
   Chaîne 3 | Progression : 100000 / 100000 (100%) | Taux d'acc. : 98.6%
-=&gt; Chaîne 3 terminée avec succès. Taux d'acceptation final : 98.61%
-Chaîne 3 terminée en 0.99 minutes.
+=&gt; Chaîne 3 terminée avec succès. Taux d'acceptation final : 98.59%
+Chaîne 3 terminée en 0.84 minutes.
 Exécution de la Chaîne 4...
-  Chaîne 4 | Progression : 25000 / 100000 (25%) | Taux d'acc. : 98.6%
-  Chaîne 4 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.6%
-  Chaîne 4 | Progression : 75000 / 100000 (75%) | Taux d'acc. : 98.6%
-  Chaîne 4 | Progression : 100000 / 100000 (100%) | Taux d'acc. : 98.6%
-=&gt; Chaîne 4 terminée avec succès. Taux d'acceptation final : 98.63%
-Chaîne 4 terminée en 1.01 minutes.
+  Chaîne 4 | Progression : 25000 / 100000 (25%) | Taux d'acc. : 98.5%
+  Chaîne 4 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.5%
+  Chaîne 4 | Progression : 75000 / 100000 (75%) | Taux d'acc. : 98.5%
+  Chaîne 4 | Progression : 100000 / 100000 (100%) | Taux d'acc. : 98.5%
+=&gt; Chaîne 4 terminée avec succès. Taux d'acceptation final : 98.53%
+Chaîne 4 terminée en 0.85 minutes.
 Exécution de la Chaîne 5...
-  Chaîne 5 | Progression : 25000 / 100000 (25%) | Taux d'acc. : 98.7%
-  Chaîne 5 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.6%
+  Chaîne 5 | Progression : 25000 / 100000 (25%) | Taux d'acc. : 98.6%
+  Chaîne 5 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.5%
   Chaîne 5 | Progression : 75000 / 100000 (75%) | Taux d'acc. : 98.6%
   Chaîne 5 | Progression : 100000 / 100000 (100%) | Taux d'acc. : 98.6%
-=&gt; Chaîne 5 terminée avec succès. Taux d'acceptation final : 98.60%
-Chaîne 5 terminée en 1.00 minutes.</code></pre>
+=&gt; Chaîne 5 terminée avec succès. Taux d'acceptation final : 98.56%
+Chaîne 5 terminée en 0.84 minutes.</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -634,7 +637,7 @@ Chaîne 5 terminée en 1.00 minutes.</code></pre>
 <span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
 <span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">14</span>),</span>
 <span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -646,7 +649,7 @@ Chaîne 5 terminée en 1.00 minutes.</code></pre>
 <p>La figure montre une convergence rapide des cinq chaînes vers une même zone de forte densité. Leur superposition indique un excellent mélange et une exploration efficace de l’espace des paramètres.</p>
 <p>La stabilité des trajectoires confirme que la phase de chauffe (<em>burn-in</em>) est suffisante et que les estimations postérieures obtenues sont fiables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------------------------------------------------------</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------------------------------------------------------</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#                   Main run 1 chain </span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------------------------------------------------------</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>n_chains <span class="ot">&lt;-</span> <span class="dv">1</span></span>
@@ -661,19 +664,19 @@ Chaîne 5 terminée en 1.00 minutes.</code></pre>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  all_results[[i]] <span class="ot">&lt;-</span> <span class="fu">run_chain</span>(i, n_iter, Y, J, eps, L)</span>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  end_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Chaîne %d terminée en %.2f minutes.</span><span class="sc">\n</span><span class="st">"</span>, i, <span class="fu">as.numeric</span>(end_time <span class="sc">-</span> start_time, <span class="at">units=</span><span class="st">"mins"</span>)))</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Exécution de la Chaîne 1...
-  Chaîne 1 | Progression : 1250 / 5000 (25%) | Taux d'acc. : 99.2%
-  Chaîne 1 | Progression : 2500 / 5000 (50%) | Taux d'acc. : 98.9%
-  Chaîne 1 | Progression : 3750 / 5000 (75%) | Taux d'acc. : 98.7%
+  Chaîne 1 | Progression : 1250 / 5000 (25%) | Taux d'acc. : 98.4%
+  Chaîne 1 | Progression : 2500 / 5000 (50%) | Taux d'acc. : 98.7%
+  Chaîne 1 | Progression : 3750 / 5000 (75%) | Taux d'acc. : 98.5%
   Chaîne 1 | Progression : 5000 / 5000 (100%) | Taux d'acc. : 98.5%
-=&gt; Chaîne 1 terminée avec succès. Taux d'acceptation final : 98.46%
-Chaîne 1 terminée en 0.05 minutes.</code></pre>
+=&gt; Chaîne 1 terminée avec succès. Taux d'acceptation final : 98.50%
+Chaîne 1 terminée en 0.04 minutes.</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Diagnostic de la Chaîne 1 : Analyse du Burn-in et de l'Autocorrélation</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>chaine <span class="ot">&lt;-</span> all_results[[<span class="dv">1</span>]]<span class="sc">$</span>lp</span>
@@ -693,7 +696,7 @@ Chaîne 1 terminée en 0.05 minutes.</code></pre>
 <span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(chaine, <span class="at">main=</span><span class="st">"Avant Burn-In (Chain 1)"</span>)</span>
 <span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Analyse de l'autocorrélation après Burn-in</span></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(chaine_after_burnin, <span class="at">main=</span><span class="st">"Apres Burn-In (Chain 1)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(chaine_after_burnin, <span class="at">main=</span><span class="st">"Apres Burn-In (Chain 1)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -705,7 +708,7 @@ Chaîne 1 terminée en 0.05 minutes.</code></pre>
 <p>L’analyse de la fonction d’autocorrélation (ACF) montre une diminution rapide de la corrélation entre les itérations successives. Après quelques lags, l’autocorrélation devient négligeable, indiquant que les échantillons générés sont quasiment indépendants.</p>
 <p>Cette propriété témoigne de l’efficacité de l’algorithme HMC, qui permet une exploration plus rapide de l’espace des paramètres que les méthodes MCMC classiques. De plus, la stabilité observée après la phase de <em>burn-in</em> confirme que les échantillons utilisés pour l’inférence proviennent bien d’une distribution stationnaire.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plots</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plots</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualisation des paramètres globaux (Mu et Sigma) - Chaîne 1</span></span>
@@ -718,7 +721,7 @@ Chaîne 1 terminée en 0.05 minutes.</code></pre>
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># --- ANALYSE DE SIGMA (Écart-type de la variabilité interannuelle) ---</span></span>
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>sigma_trace <span class="ot">&lt;-</span> all_results[[<span class="dv">1</span>]]<span class="sc">$</span>sigma</span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sigma_trace, <span class="at">type=</span><span class="st">"l"</span>,<span class="at">col=</span><span class="st">"darkblue"</span>, <span class="at">main=</span><span class="st">"Traceplot sigma"</span>)</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(sigma_trace,<span class="at">col=</span><span class="st">"darkblue"</span>, <span class="at">main=</span><span class="st">"Posterior sigma"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(sigma_trace,<span class="at">col=</span><span class="st">"darkblue"</span>, <span class="at">main=</span><span class="st">"Posterior sigma"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -728,7 +731,7 @@ Chaîne 1 terminée en 0.05 minutes.</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualisation des paramètres latents Zi</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualisation des paramètres latents Zi</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Récupération de la trace des paramètres Z pour la première chaîne</span></span>
@@ -738,7 +741,7 @@ Chaîne 1 terminée en 0.05 minutes.</code></pre>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Z_trace, <span class="at">type=</span><span class="st">"p"</span>,<span class="at">col=</span><span class="st">"darkorange"</span>, <span class="at">main=</span><span class="st">"Traceplot Z"</span>)</span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Histogramme global de la distribution des Z</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(Z_trace,<span class="at">col =</span> <span class="st">"darkorange"</span>, <span class="at">main=</span><span class="st">"Posterior Z"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(Z_trace,<span class="at">col =</span> <span class="st">"darkorange"</span>, <span class="at">main=</span><span class="st">"Posterior Z"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -748,7 +751,7 @@ Chaîne 1 terminée en 0.05 minutes.</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transformation des paramètres et construction de la matrice finale</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transformation des paramètres et construction de la matrice finale</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Conversion des log-intensités (Z) en intensités réelles (Lambda)</span></span>
@@ -761,26 +764,26 @@ Chaîne 1 terminée en 0.05 minutes.</code></pre>
 <span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>n_l <span class="ot">&lt;-</span> <span class="fu">ncol</span>(λ_samples)</span>
 <span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(samples_matrix) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">paste0</span>(<span class="st">"λ"</span>, <span class="dv">1</span><span class="sc">:</span>n_l), <span class="st">"μ"</span>, <span class="st">"σ^2"</span>)</span>
 <span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">round</span>(samples_matrix,<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">round</span>(samples_matrix,<span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>          λ1      λ2      λ3      λ4      λ5      λ6       λ7      λ8      λ9
-[1,] 2.17583 1.54741 3.42926 2.71449 3.79049 3.79115 10.06495 4.76428 7.65873
-[2,] 1.32318 0.79728 0.90263 1.44156 3.80469 3.04311 10.28150 4.54020 8.26568
-[3,] 3.00040 3.68854 3.37778 1.52329 2.70230 3.95543 10.53657 4.46155 8.39005
-[4,] 2.85303 1.65963 1.40959 1.37263 1.42587 2.47779  9.53242 4.83528 8.07520
-[5,] 3.19667 2.90168 3.52401 0.94596 1.34644 4.15175 11.45194 4.47669 7.99076
-[6,] 2.64586 1.30821 0.80180 2.18221 3.83612 3.16682  9.47452 4.32435 7.72265
-          λ10     λ11     λ12     λ13       μ     σ^2
-[1,] 27.06473 6.55422 6.54379 3.35530 1.43551 0.74638
-[2,] 26.69840 7.59769 8.08469 2.47053 1.41700 1.09658
-[3,] 25.56154 8.00237 5.71220 2.24972 1.34875 0.86834
-[4,] 22.06601 7.12903 7.28081 2.20411 1.64465 1.30605
-[5,] 25.12336 6.83010 6.22600 2.83137 1.29732 1.30109
-[6,] 26.56112 6.59239 8.32834 2.72348 1.44710 1.27924</code></pre>
+<pre><code>          λ1      λ2      λ3       λ4      λ5      λ6       λ7      λ8      λ9
+[1,] 2.22160 1.53855 4.26189  9.55277 4.78216 8.36969 25.62910 8.26147 7.40328
+[2,] 1.24070 0.82237 3.20927 11.38384 5.53444 9.10856 26.29189 8.12070 6.61597
+[3,] 2.63978 1.13197 3.84781  9.23404 4.71081 8.50880 25.91866 7.30269 6.83466
+[4,] 2.01040 1.09793 2.89019 11.43805 5.08320 7.85282 24.76812 7.79025 6.80006
+[5,] 2.92606 2.10238 3.47188  9.25383 5.40964 8.02866 24.13032 6.33690 7.36914
+[6,] 1.41479 1.14616 3.21659 11.27177 6.13566 7.42780 25.87322 6.83839 6.51366
+         λ10       μ     σ^2
+[1,] 8.91890 1.75473 0.56785
+[2,] 9.02169 1.69843 0.92037
+[3,] 9.08749 1.38536 0.73237
+[4,] 9.01532 1.63415 1.06167
+[5,] 9.08329 1.55706 0.62076
+[6,] 9.02877 1.85973 0.96884</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualisation des distributions postérieures pour chaque Lambda (Années 1-12)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualisation des distributions postérieures pour chaque Lambda (Années 1-12)</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>)) </span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -800,20 +803,14 @@ Chaîne 1 terminée en 0.05 minutes.</code></pre>
 <span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a> <span class="co"># Ajout d'une ligne verticale pour représenter la moyenne (Mean)</span></span>
 <span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">mean</span>(λ_samples[burn_in<span class="sc">:</span>n_iter, i]), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Réinitialisation de la disposition graphique par défaut (1x1)</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
 <p><img src="Part2_1_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Réinitialisation de la disposition graphique par défaut (1x1)</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Part2_1_files/figure-html/unnamed-chunk-15-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -824,88 +821,85 @@ Chaîne 1 terminée en 0.05 minutes.</code></pre>
 <section id="estimateurs-ponctuels-et-des-intervalles-de-confiances-pour-chaque-parametre" class="level1" data-number="7">
 <h1 data-number="7"><span class="header-section-number">7</span> Estimateurs ponctuels et des intervalles de confiances pour chaque parametre</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Eliminer 1000 premiere ligne </span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>clean_samples <span class="ot">&lt;-</span> samples_matrix[<span class="dv">1001</span><span class="sc">:</span><span class="dv">5000</span>, ]</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1.Posterior Mean)</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>post_mean <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(clean_samples)</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Interval de confiances 95% (95% Credible Interval)</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>post_ci <span class="ot">&lt;-</span> <span class="fu">apply</span>(clean_samples, <span class="dv">2</span>, quantile, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Met dans un tableau </span></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">Parameter =</span> <span class="fu">colnames</span>(clean_samples),</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">Estimate =</span> post_mean,</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">CI_lower =</span> post_ci[<span class="dv">1</span>, ],</span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">CI_upper =</span> post_ci[<span class="dv">2</span>, ]</span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Eliminer 1000 premiere ligne </span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>clean_samples <span class="ot">&lt;-</span> samples_matrix[<span class="dv">1001</span><span class="sc">:</span><span class="dv">5000</span>, ]</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1.Posterior Mean)</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>post_mean <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(clean_samples)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Interval de confiances 95% (95% Credible Interval)</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>post_ci <span class="ot">&lt;-</span> <span class="fu">apply</span>(clean_samples, <span class="dv">2</span>, quantile, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Met dans un tableau </span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">Parameter =</span> <span class="fu">colnames</span>(clean_samples),</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">Estimate =</span> post_mean,</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">CI_lower =</span> post_ci[<span class="dv">1</span>, ],</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">CI_upper =</span> post_ci[<span class="dv">2</span>, ]</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    Parameter   Estimate   CI_lower  CI_upper
-λ1         λ1  2.5840567  0.7102412  5.875979
-λ2         λ2  1.9559413  0.3854610  4.905883
-λ3         λ3  1.9548799  0.4137098  4.706506
-λ4         λ4  1.5728169  0.4206321  3.504243
-λ5         λ5  2.3465125  0.8022723  4.686968
-λ6         λ6  3.4393435  2.0378322  5.130146
-λ7         λ7 10.3111392  8.0858411 12.844453
-λ8         λ8  5.2771550  3.9088180  6.824143
-λ9         λ9  8.4817925  6.8570452 10.219580
-λ10       λ10 26.7008255 24.1433423 29.481854
-λ11       λ11  7.1658183  5.8921874  8.600457
-λ12       λ12  6.8585157  5.7313904  8.088596
-λ13       λ13  2.1329726  1.0963127  3.431706
-μ           μ  1.3552806  0.7246796  1.923366
-σ^2       σ^2  0.9926103  0.6394064  1.529252</code></pre>
+λ1         λ1  1.9310084  0.5211736  4.167386
+λ2         λ2  2.6559300  0.9985524  5.109228
+λ3         λ3  3.5648196  2.1489849  5.299386
+λ4         λ4 10.3572402  8.0727496 12.919419
+λ5         λ5  5.2760600  3.8520286  6.935709
+λ6         λ6  8.3722891  6.7393973 10.120515
+λ7         λ7 26.7476124 24.0477720 29.525586
+λ8         λ8  7.2043424  5.9176642  8.709489
+λ9         λ9  7.1430222  5.9437889  8.347608
+λ10       λ10  9.1045815  7.6549078 10.694375
+μ           μ  1.7883283  1.1449787  2.344608
+σ^2       σ^2  0.8956457  0.5250640  1.460685</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 7. Création du Forest Plot (Adapté à vos noms de colonnes)</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Préparation de l'ordre des paramètres</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co"># On utilise 'Parameter' car c'est le nom dans votre tableau results</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>results<span class="sc">$</span>Parameter <span class="ot">&lt;-</span> <span class="fu">factor</span>(results<span class="sc">$</span>Parameter, <span class="at">levels =</span> <span class="fu">rev</span>(results<span class="sc">$</span>Parameter))</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Génération du graphique Forest Plot</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(results, <span class="fu">aes</span>(<span class="at">x =</span> Parameter, <span class="at">y =</span> Estimate)) <span class="sc">+</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Barres d'erreur (on utilise CI_lower et CI_upper de votre tableau)</span></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> CI_lower, <span class="at">ymax =</span> CI_upper), </span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="fl">0.2</span>, </span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> <span class="st">"#E44A33"</span>, <span class="co"># Le rouge de l'image</span></span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span> </span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Points de la moyenne (on utilise Estimate de votre tableau)</span></span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"#2C3E50"</span>) <span class="sc">+</span> </span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Inversion des axes pour l'effet horizontal</span></span>
-<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
-<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Style visuel</span></span>
-<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
-<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Titres en français</span></span>
-<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Variabilité Inter-Annuelle des Occurrences (Paramètres λ)"</span>,</span>
-<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Moyenne a posteriori et Intervalles de crédibilité à 95%"</span>,</span>
-<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Effet aléatoire (Année)"</span>,</span>
-<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Nombre moyen d'occurrences estimé (λ)"</span></span>
-<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Esthétique du texte</span></span>
-<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">14</span>, <span class="at">hjust =</span> <span class="dv">0</span>),</span>
-<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">color =</span> <span class="st">"grey30"</span>),</span>
-<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">"italic"</span>),</span>
-<span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>)</span>
-<span id="cb23-44"><a href="#cb23-44" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 7. Création du Forest Plot (Adapté à vos noms de colonnes)</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Préparation de l'ordre des paramètres</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co"># On utilise 'Parameter' car c'est le nom dans votre tableau results</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>results<span class="sc">$</span>Parameter <span class="ot">&lt;-</span> <span class="fu">factor</span>(results<span class="sc">$</span>Parameter, <span class="at">levels =</span> <span class="fu">rev</span>(results<span class="sc">$</span>Parameter))</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Génération du graphique Forest Plot</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(results, <span class="fu">aes</span>(<span class="at">x =</span> Parameter, <span class="at">y =</span> Estimate)) <span class="sc">+</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Barres d'erreur (on utilise CI_lower et CI_upper de votre tableau)</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> CI_lower, <span class="at">ymax =</span> CI_upper), </span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="fl">0.2</span>, </span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> <span class="st">"#E44A33"</span>, <span class="co"># Le rouge de l'image</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span> </span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Points de la moyenne (on utilise Estimate de votre tableau)</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"#2C3E50"</span>) <span class="sc">+</span> </span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Inversion des axes pour l'effet horizontal</span></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Style visuel</span></span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Titres en français</span></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Variabilité Inter-Annuelle des Occurrences (Paramètres λ)"</span>,</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Moyenne a posteriori et Intervalles de crédibilité à 95%"</span>,</span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Effet aléatoire (Année)"</span>,</span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Nombre moyen d'occurrences estimé (λ)"</span></span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Esthétique du texte</span></span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">14</span>, <span class="at">hjust =</span> <span class="dv">0</span>),</span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">color =</span> <span class="st">"grey30"</span>),</span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">"italic"</span>),</span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>)</span>
+<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -921,113 +915,113 @@ Chaîne 1 terminée en 0.05 minutes.</code></pre>
 <section id="analyser-la-qualité-prédictive-du-modèle." class="level1" data-number="8">
 <h1 data-number="8"><span class="header-section-number">8</span> Analyser la qualité prédictive du modèle.</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Création de y_list : chaque élément de la liste est un vecteur contenant </span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># le nombre d'occurrences (moustiques) par province pour chaque année.</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>y_list <span class="ot">&lt;-</span> <span class="fu">split</span>(df<span class="sc">$</span>n_occurrences, df<span class="sc">$</span>i)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Extraction des résultats de la Chaîne 1 (MCMC)</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>res_chain1 <span class="ot">&lt;-</span> all_results[[<span class="dv">1</span>]]</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Élimination de la période de chauffe (burn-in, ex: 1000 premières itérations)</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>burn_in <span class="ot">&lt;-</span> <span class="dv">1001</span></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>n_iter_total <span class="ot">&lt;-</span> <span class="fu">length</span>(res_chain1<span class="sc">$</span>mu)</span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>indices_kept <span class="ot">&lt;-</span> burn_in<span class="sc">:</span>n_iter_total</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Création d'un dataframe contenant les valeurs de lambda_i (exp(Z_i))</span></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="co"># On transforme les échantillons de Z (espace log) en intensité réelle (lambda)</span></span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>lambda_samples <span class="ot">&lt;-</span> <span class="fu">exp</span>(res_chain1<span class="sc">$</span>Z[indices_kept, ])</span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(lambda_samples) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"lambda_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(lambda_samples))</span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Conversion en structure dataframe pour faciliter les analyses PPC suivantes</span></span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>samples_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(lambda_samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Création de y_list : chaque élément de la liste est un vecteur contenant </span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># le nombre d'occurrences (moustiques) par province pour chaque année.</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>y_list <span class="ot">&lt;-</span> <span class="fu">split</span>(df<span class="sc">$</span>n_occurrences, df<span class="sc">$</span>i)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Extraction des résultats de la Chaîne 1 (MCMC)</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>res_chain1 <span class="ot">&lt;-</span> all_results[[<span class="dv">1</span>]]</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Élimination de la période de chauffe (burn-in, ex: 1000 premières itérations)</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>burn_in <span class="ot">&lt;-</span> <span class="dv">1001</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>n_iter_total <span class="ot">&lt;-</span> <span class="fu">length</span>(res_chain1<span class="sc">$</span>mu)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>indices_kept <span class="ot">&lt;-</span> burn_in<span class="sc">:</span>n_iter_total</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Création d'un dataframe contenant les valeurs de lambda_i (exp(Z_i))</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="co"># On transforme les échantillons de Z (espace log) en intensité réelle (lambda)</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>lambda_samples <span class="ot">&lt;-</span> <span class="fu">exp</span>(res_chain1<span class="sc">$</span>Z[indices_kept, ])</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(lambda_samples) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"lambda_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(lambda_samples))</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Conversion en structure dataframe pour faciliter les analyses PPC suivantes</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>samples_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(lambda_samples)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 1. Préparation des données observées (Réalité) ---</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">unlist</span>(y_list) <span class="co"># Liste des occurrences observées par an</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>stat_obs_zero <span class="ot">&lt;-</span> <span class="fu">mean</span>(y_obs <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Proportion réelle de zéros</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>stat_obs_max  <span class="ot">&lt;-</span> <span class="fu">max</span>(y_obs)       <span class="co"># Valeur maximale réelle observée</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 2. Configuration de la simulation ---</span></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>n_samples_ppc <span class="ot">&lt;-</span> <span class="dv">1000</span> </span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>) <span class="co"># Pour la reproductibilité</span></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>indices_ppc <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(samples_df), n_samples_ppc)</span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>rep_stat_zero <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n_samples_ppc)</span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>rep_stat_max  <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n_samples_ppc)</span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>I <span class="ot">&lt;-</span> <span class="fu">length</span>(y_list) <span class="co"># Nombre d'années (12)</span></span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>J_list <span class="ot">&lt;-</span> <span class="fu">sapply</span>(y_list, length) <span class="co"># Nombre de sites par année</span></span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Génération des données prédictives a posteriori en cours...</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 1. Préparation des données observées (Réalité) ---</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">unlist</span>(y_list) <span class="co"># Liste des occurrences observées par an</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>stat_obs_zero <span class="ot">&lt;-</span> <span class="fu">mean</span>(y_obs <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Proportion réelle de zéros</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>stat_obs_max  <span class="ot">&lt;-</span> <span class="fu">max</span>(y_obs)       <span class="co"># Valeur maximale réelle observée</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 2. Configuration de la simulation ---</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>n_samples_ppc <span class="ot">&lt;-</span> <span class="dv">1000</span> </span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>) <span class="co"># Pour la reproductibilité</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>indices_ppc <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(samples_df), n_samples_ppc)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>rep_stat_zero <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n_samples_ppc)</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>rep_stat_max  <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n_samples_ppc)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>I <span class="ot">&lt;-</span> <span class="fu">length</span>(y_list) <span class="co"># Nombre d'années (12)</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>J_list <span class="ot">&lt;-</span> <span class="fu">sapply</span>(y_list, length) <span class="co"># Nombre de sites par année</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Génération des données prédictives a posteriori en cours...</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Génération des données prédictives a posteriori en cours...</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 3. Boucle de simulation des données répliquées (y_rep) ---</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_samples_ppc) {</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    idx <span class="ot">&lt;-</span> indices_ppc[t]</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    y_rep_t <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">0</span>)</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>I) {</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Extraction du lambda pour l'année i à l'itération t</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>        lambda_i_t <span class="ot">&lt;-</span> samples_df[idx, <span class="fu">paste0</span>(<span class="st">"lambda_"</span>, i)]</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Simulation de nouvelles observations selon la loi de Poisson</span></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># J_list[i] représente l'effort d'échantillonnage de l'année i</span></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>        y_rep_t <span class="ot">&lt;-</span> <span class="fu">c</span>(y_rep_t, <span class="fu">rpois</span>(J_list[i], <span class="at">lambda =</span> lambda_i_t))</span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calcul des statistiques sur les données simulées</span></span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>    rep_stat_zero[t] <span class="ot">&lt;-</span> <span class="fu">mean</span>(y_rep_t <span class="sc">==</span> <span class="dv">0</span>)</span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>    rep_stat_max[t]  <span class="ot">&lt;-</span> <span class="fu">max</span>(y_rep_t)</span>
-<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 4. Calcul des P-values bayésiennes ---</span></span>
-<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Si la p-value est proche de 0.5, le modèle est bien ajusté.</span></span>
-<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>p_val_zero <span class="ot">&lt;-</span> <span class="fu">mean</span>(rep_stat_zero <span class="sc">&gt;=</span> stat_obs_zero)</span>
-<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>p_val_max  <span class="ot">&lt;-</span> <span class="fu">mean</span>(rep_stat_max <span class="sc">&gt;=</span> stat_obs_max)</span>
-<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"P-value bayésienne (Proportion de zéros) : %.3f</span><span class="sc">\n</span><span class="st">"</span>, p_val_zero))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 3. Boucle de simulation des données répliquées (y_rep) ---</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_samples_ppc) {</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    idx <span class="ot">&lt;-</span> indices_ppc[t]</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    y_rep_t <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">0</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>I) {</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Extraction du lambda pour l'année i à l'itération t</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        lambda_i_t <span class="ot">&lt;-</span> samples_df[idx, <span class="fu">paste0</span>(<span class="st">"lambda_"</span>, i)]</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Simulation de nouvelles observations selon la loi de Poisson</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># J_list[i] représente l'effort d'échantillonnage de l'année i</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>        y_rep_t <span class="ot">&lt;-</span> <span class="fu">c</span>(y_rep_t, <span class="fu">rpois</span>(J_list[i], <span class="at">lambda =</span> lambda_i_t))</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calcul des statistiques sur les données simulées</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>    rep_stat_zero[t] <span class="ot">&lt;-</span> <span class="fu">mean</span>(y_rep_t <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>    rep_stat_max[t]  <span class="ot">&lt;-</span> <span class="fu">max</span>(y_rep_t)</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 4. Calcul des P-values bayésiennes ---</span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Si la p-value est proche de 0.5, le modèle est bien ajusté.</span></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>p_val_zero <span class="ot">&lt;-</span> <span class="fu">mean</span>(rep_stat_zero <span class="sc">&gt;=</span> stat_obs_zero)</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>p_val_max  <span class="ot">&lt;-</span> <span class="fu">mean</span>(rep_stat_max <span class="sc">&gt;=</span> stat_obs_max)</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"P-value bayésienne (Proportion de zéros) : %.3f</span><span class="sc">\n</span><span class="st">"</span>, p_val_zero))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P-value bayésienne (Proportion de zéros) : 1.000</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"P-value bayésienne (Maximum observé) : %.3f</span><span class="sc">\n</span><span class="st">"</span>, p_val_max))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"P-value bayésienne (Maximum observé) : %.3f</span><span class="sc">\n</span><span class="st">"</span>, p_val_max))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P-value bayésienne (Maximum observé) : 0.000</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 5. Visualisation graphique ---</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>ppc_long <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">Valeur =</span> <span class="fu">c</span>(rep_stat_zero, rep_stat_max),</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Statistique =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"1. Proportion de sites sans moustiques (Zéro)"</span>, </span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"2. Pire Invasion (Maximum observé)"</span>), </span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">each =</span> n_samples_ppc)</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>obs_lines <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Valeur_obs =</span> <span class="fu">c</span>(stat_obs_zero, stat_obs_max),</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Statistique =</span> <span class="fu">c</span>(<span class="st">"1. Proportion de sites sans moustiques (Zéro)"</span>, </span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"2. Pire Invasion (Maximum observé)"</span>)</span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>ppc_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppc_long, <span class="fu">aes</span>(<span class="at">x =</span> Valeur)) <span class="sc">+</span></span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"#95A5A6"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">data =</span> obs_lines, <span class="fu">aes</span>(<span class="at">xintercept =</span> Valeur_obs), </span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"#E74C3C"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span> Statistique, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
-<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Vérification Prédictive a Posteriori (PPC)"</span>,</span>
-<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"L'histogramme gris représente les prédictions du modèle. La ligne rouge est la réalité observée."</span>,</span>
-<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">"Valeur de la statistique"</span>,</span>
-<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Fréquence"</span></span>
-<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
-<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#EFEFEF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
-<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">10</span>)</span>
-<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ppc_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 5. Visualisation graphique ---</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>ppc_long <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">Valeur =</span> <span class="fu">c</span>(rep_stat_zero, rep_stat_max),</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Statistique =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"1. Proportion de sites sans moustiques (Zéro)"</span>, </span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"2. Pire Invasion (Maximum observé)"</span>), </span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">each =</span> n_samples_ppc)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>obs_lines <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Valeur_obs =</span> <span class="fu">c</span>(stat_obs_zero, stat_obs_max),</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Statistique =</span> <span class="fu">c</span>(<span class="st">"1. Proportion de sites sans moustiques (Zéro)"</span>, </span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"2. Pire Invasion (Maximum observé)"</span>)</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>ppc_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppc_long, <span class="fu">aes</span>(<span class="at">x =</span> Valeur)) <span class="sc">+</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"#95A5A6"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">data =</span> obs_lines, <span class="fu">aes</span>(<span class="at">xintercept =</span> Valeur_obs), </span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"#E74C3C"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span> Statistique, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Vérification Prédictive a Posteriori (PPC)"</span>,</span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"L'histogramme gris représente les prédictions du modèle. La ligne rouge est la réalité observée."</span>,</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">"Valeur de la statistique"</span>,</span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Fréquence"</span></span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#EFEFEF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">10</span>)</span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ppc_plot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1044,6 +1038,30 @@ Chaîne 1 terminée en 0.05 minutes.</code></pre>
 </section>
 
 </main> <!-- /main -->
+<div id="preloader">
+    <div class="loader-content">
+        <div class="loader-center-group">
+            <div class="spinner"></div> 
+
+            <div class="loader-letter-container">
+                <span class="loader-letter">V</span>
+            </div>
+        </div>
+        
+        <h2 class="loader-text">MADE BY NGUYEN DUC HOANG VIET</h2>
+        <p class="loader-subtext"> PROJET MODÈLE HIÉRARCHIQUE BAYÉSIEN</p>
+    </div>
+</div>
+
+<script>
+    // Giữ nguyên đoạn script
+    window.addEventListener('load', function () {
+        const preloader = document.getElementById('preloader');
+        setTimeout(function() {
+            preloader.classList.add('fade-out');
+        }, 1200); 
+    });
+</script>
 <div style="text-align:center; font-size:0.85em; color:#888; padding:25px;">
   <strong>© 2026 NGUYEN Duc Hoang Viet &amp; Tchanang Yvan Michel — Tous droits réservés.</strong><br>
   <strong>Université de Lille — Projet Modèle hiérarchique bayésien pour l’écologie<strong><br>
@@ -1100,13 +1118,14 @@ Chaîne 1 terminée en 0.05 minutes.</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
