@@ -20,9 +20,9 @@ website:
         
     right:
       - icon: github
-        href: https://github.com/Hoangviet1810/Projet-Modele-bayesien-pour-ecologie
+        href: https://github.com/ndhviet/Projet-Modele-bayesien-pour-ecologie
       - text: "Portfolio de Viet"
-        href: https://hoangviet1810.github.io/
+        href: https://ndhviet.github.io/
         aria-label: "Portfolio"
       - icon: linkedin           
         href: https://www.linkedin.com/in/hoang-viet1810/?isSelfProfile=false
