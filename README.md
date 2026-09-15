@@ -10,7 +10,7 @@
 <a href="#"><img src="https://img.shields.io/badge/Status-Completed-brightgreen?style=flat-square"></a>
 <a href="#"><img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square"></a>
 
-<a href="https://hoangviet1810.github.io/Projet_Modele_hierarchique_bayesien_pour_ecologie/">
+<a href="https://ndhviet.github.io/Projet_Modele_hierarchique_bayesien_pour_ecologie/">
   <img src="https://img.shields.io/badge/Demo-Live%20Website-brightgreen?style=for-the-badge&logo=googlechrome&logoColor=white">
 </a>
 
@@ -79,6 +79,6 @@ Vous pouvez consulter le rapport détaillé du projet (format PDF) en cliquant s
 
 ### Dashboard interactif
 
-[![Dashboard](images/dashboard_bayes.png)](https://hoangviet1810.github.io/Projet-Modele-bayesien-pour-ecologie/images/dashboard_moustique.html)
+[![Dashboard](images/dashboard_bayes.png)](https://ndhviet.github.io/Projet-Modele-bayesien-pour-ecologie/images/dashboard_moustique.html)
 
 ➡️ Cliquez sur l'image pour ouvrir le dashboard interactif.
