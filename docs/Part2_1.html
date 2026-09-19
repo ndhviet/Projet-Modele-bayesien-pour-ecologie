@@ -280,40 +280,32 @@ Y_{i,j} \mid \lambda_i \sim \text{Poisson}(\lambda_i),
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(maps)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>tigre_moustique_data <span class="ot">&lt;-</span> <span class="fu">occ_search</span>(</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">scientificName =</span> <span class="st">"Aedes albopictus"</span>,</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">country =</span> <span class="st">"FR"</span>,</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">limit =</span> <span class="dv">2210</span>,</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#                   RESUME DES DONNÉES</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>summary_table <span class="ot">&lt;-</span> tigre_moustique_data <span class="sc">%&gt;%</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(year), <span class="sc">!</span><span class="fu">is.na</span>(stateProvince)) <span class="sc">%&gt;%</span>  </span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, stateProvince) <span class="sc">%&gt;%</span>                 </span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n_occurrences =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>) </span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> summary_table</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>i <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">factor</span>(df<span class="sc">$</span>year))</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>j <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">factor</span>(df<span class="sc">$</span>stateProvince))</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>df[, <span class="fu">c</span>(<span class="st">"year"</span>, <span class="st">"stateProvince"</span>, <span class="st">"i"</span>, <span class="st">"j"</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#                   RESUME DES DONNÉES</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>summary_table<span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/summary_tigre_moustique.csv"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> summary_table</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>i <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">factor</span>(df<span class="sc">$</span>year))</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>j <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">factor</span>(df<span class="sc">$</span>stateProvince))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>df[, <span class="fu">c</span>(<span class="st">"year"</span>, <span class="st">"stateProvince"</span>, <span class="st">"i"</span>, <span class="st">"j"</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 94 × 4
+<pre><code># A tibble: 84 × 4
     year stateProvince                  i     j
-   &lt;int&gt; &lt;chr&gt;                      &lt;int&gt; &lt;int&gt;
- 1  2017 Languedoc-Roussillon           1    13
- 2  2017 Midi-Pyrénées                  1    16
- 3  2018 Languedoc-Roussillon           2    13
- 4  2018 Midi-Pyrénées                  2    16
- 5  2019 Aquitaine                      3     2
- 6  2019 Corse                          3     8
- 7  2019 Languedoc-Roussillon           3    13
- 8  2019 Provence-Alpes-Côte d'Azur     3    20
- 9  2019 Rhône-Alpes                    3    23
-10  2020 Aquitaine                      4     2
-# ℹ 84 more rows</code></pre>
+   &lt;dbl&gt; &lt;chr&gt;                      &lt;int&gt; &lt;int&gt;
+ 1  2014 Languedoc-Roussillon           1    12
+ 2  2015 Provence-Alpes-Côte d'Azur     2    18
+ 3  2016 Provence-Alpes-Côte d'Azur     3    18
+ 4  2017 Languedoc-Roussillon           4    12
+ 5  2017 Midi-Pyrénées                  4    14
+ 6  2018 Languedoc-Roussillon           5    12
+ 7  2018 Midi-Pyrénées                  5    14
+ 8  2019 Aquitaine                      6     2
+ 9  2019 Corse                          6     8
+10  2019 Languedoc-Roussillon           6    12
+# ℹ 74 more rows</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -553,40 +545,40 @@ Y_{i,j} \mid \lambda_i \sim \text{Poisson}(\lambda_i),
 <span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Exécution de la Chaîne 1...
-  Chaîne 1 | Progression : 25000 / 100000 (25%) | Taux d'acc. : 98.7%
-  Chaîne 1 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.7%
+  Chaîne 1 | Progression : 25000 / 100000 (25%) | Taux d'acc. : 98.6%
+  Chaîne 1 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.6%
   Chaîne 1 | Progression : 75000 / 100000 (75%) | Taux d'acc. : 98.6%
   Chaîne 1 | Progression : 100000 / 100000 (100%) | Taux d'acc. : 98.6%
-=&gt; Chaîne 1 terminée avec succès. Taux d'acceptation final : 98.63%
-Chaîne 1 terminée en 0.88 minutes.
+=&gt; Chaîne 1 terminée avec succès. Taux d'acceptation final : 98.62%
+Chaîne 1 terminée en 0.93 minutes.
 Exécution de la Chaîne 2...
-  Chaîne 2 | Progression : 25000 / 100000 (25%) | Taux d'acc. : 98.5%
-  Chaîne 2 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.5%
-  Chaîne 2 | Progression : 75000 / 100000 (75%) | Taux d'acc. : 98.5%
-  Chaîne 2 | Progression : 100000 / 100000 (100%) | Taux d'acc. : 98.5%
-=&gt; Chaîne 2 terminée avec succès. Taux d'acceptation final : 98.54%
-Chaîne 2 terminée en 0.87 minutes.
+  Chaîne 2 | Progression : 25000 / 100000 (25%) | Taux d'acc. : 98.6%
+  Chaîne 2 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.6%
+  Chaîne 2 | Progression : 75000 / 100000 (75%) | Taux d'acc. : 98.6%
+  Chaîne 2 | Progression : 100000 / 100000 (100%) | Taux d'acc. : 98.6%
+=&gt; Chaîne 2 terminée avec succès. Taux d'acceptation final : 98.60%
+Chaîne 2 terminée en 0.93 minutes.
 Exécution de la Chaîne 3...
-  Chaîne 3 | Progression : 25000 / 100000 (25%) | Taux d'acc. : 98.6%
-  Chaîne 3 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.6%
-  Chaîne 3 | Progression : 75000 / 100000 (75%) | Taux d'acc. : 98.6%
-  Chaîne 3 | Progression : 100000 / 100000 (100%) | Taux d'acc. : 98.6%
-=&gt; Chaîne 3 terminée avec succès. Taux d'acceptation final : 98.59%
-Chaîne 3 terminée en 0.87 minutes.
+  Chaîne 3 | Progression : 25000 / 100000 (25%) | Taux d'acc. : 98.7%
+  Chaîne 3 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.7%
+  Chaîne 3 | Progression : 75000 / 100000 (75%) | Taux d'acc. : 98.7%
+  Chaîne 3 | Progression : 100000 / 100000 (100%) | Taux d'acc. : 98.7%
+=&gt; Chaîne 3 terminée avec succès. Taux d'acceptation final : 98.68%
+Chaîne 3 terminée en 0.92 minutes.
 Exécution de la Chaîne 4...
-  Chaîne 4 | Progression : 25000 / 100000 (25%) | Taux d'acc. : 98.5%
-  Chaîne 4 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.5%
-  Chaîne 4 | Progression : 75000 / 100000 (75%) | Taux d'acc. : 98.5%
-  Chaîne 4 | Progression : 100000 / 100000 (100%) | Taux d'acc. : 98.5%
-=&gt; Chaîne 4 terminée avec succès. Taux d'acceptation final : 98.53%
-Chaîne 4 terminée en 0.87 minutes.
+  Chaîne 4 | Progression : 25000 / 100000 (25%) | Taux d'acc. : 98.7%
+  Chaîne 4 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.6%
+  Chaîne 4 | Progression : 75000 / 100000 (75%) | Taux d'acc. : 98.7%
+  Chaîne 4 | Progression : 100000 / 100000 (100%) | Taux d'acc. : 98.6%
+=&gt; Chaîne 4 terminée avec succès. Taux d'acceptation final : 98.62%
+Chaîne 4 terminée en 0.93 minutes.
 Exécution de la Chaîne 5...
   Chaîne 5 | Progression : 25000 / 100000 (25%) | Taux d'acc. : 98.6%
-  Chaîne 5 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.5%
+  Chaîne 5 | Progression : 50000 / 100000 (50%) | Taux d'acc. : 98.6%
   Chaîne 5 | Progression : 75000 / 100000 (75%) | Taux d'acc. : 98.6%
   Chaîne 5 | Progression : 100000 / 100000 (100%) | Taux d'acc. : 98.6%
-=&gt; Chaîne 5 terminée avec succès. Taux d'acceptation final : 98.56%
-Chaîne 5 terminée en 0.88 minutes.</code></pre>
+=&gt; Chaîne 5 terminée avec succès. Taux d'acceptation final : 98.63%
+Chaîne 5 terminée en 0.91 minutes.</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -667,11 +659,11 @@ Chaîne 5 terminée en 0.88 minutes.</code></pre>
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Exécution de la Chaîne 1...
-  Chaîne 1 | Progression : 1250 / 5000 (25%) | Taux d'acc. : 98.4%
-  Chaîne 1 | Progression : 2500 / 5000 (50%) | Taux d'acc. : 98.7%
-  Chaîne 1 | Progression : 3750 / 5000 (75%) | Taux d'acc. : 98.5%
-  Chaîne 1 | Progression : 5000 / 5000 (100%) | Taux d'acc. : 98.5%
-=&gt; Chaîne 1 terminée avec succès. Taux d'acceptation final : 98.50%
+  Chaîne 1 | Progression : 1250 / 5000 (25%) | Taux d'acc. : 99.1%
+  Chaîne 1 | Progression : 2500 / 5000 (50%) | Taux d'acc. : 99.1%
+  Chaîne 1 | Progression : 3750 / 5000 (75%) | Taux d'acc. : 99.0%
+  Chaîne 1 | Progression : 5000 / 5000 (100%) | Taux d'acc. : 98.9%
+=&gt; Chaîne 1 terminée avec succès. Taux d'acceptation final : 98.88%
 Chaîne 1 terminée en 0.05 minutes.</code></pre>
 </div>
 </div>
@@ -766,20 +758,20 @@ Chaîne 1 terminée en 0.05 minutes.</code></pre>
 <span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">round</span>(samples_matrix,<span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>          λ1      λ2      λ3       λ4      λ5      λ6       λ7      λ8      λ9
-[1,] 2.22160 1.53855 4.26189  9.55277 4.78216 8.36969 25.62910 8.26147 7.40328
-[2,] 1.24070 0.82237 3.20927 11.38384 5.53444 9.10856 26.29189 8.12070 6.61597
-[3,] 2.63978 1.13197 3.84781  9.23404 4.71081 8.50880 25.91866 7.30269 6.83466
-[4,] 2.01040 1.09793 2.89019 11.43805 5.08320 7.85282 24.76812 7.79025 6.80006
-[5,] 2.92606 2.10238 3.47188  9.25383 5.40964 8.02866 24.13032 6.33690 7.36914
-[6,] 1.41479 1.14616 3.21659 11.27177 6.13566 7.42780 25.87322 6.83839 6.51366
-         λ10       μ     σ^2
-[1,] 8.91890 1.75473 0.56785
-[2,] 9.02169 1.69843 0.92037
-[3,] 9.08749 1.38536 0.73237
-[4,] 9.01532 1.63415 1.06167
-[5,] 9.08329 1.55706 0.62076
-[6,] 9.02877 1.85973 0.96884</code></pre>
+<pre><code>          λ1      λ2      λ3      λ4      λ5      λ6       λ7      λ8      λ9
+[1,] 1.36418 2.08942 2.05047 1.71138 1.13624 3.02476 10.04982 5.11309 7.81304
+[2,] 3.83072 1.47090 1.97260 1.76831 3.21791 3.16393 10.56762 4.64051 7.97642
+[3,] 1.22159 2.21965 1.68127 0.84491 1.40232 3.03692 10.06556 3.96697 8.42561
+[4,] 3.62186 1.39417 1.38896 3.15475 2.71189 3.87901 10.49444 3.97176 7.56576
+[5,] 1.54245 1.79993 1.71271 0.56607 0.59195 2.76289 10.01988 3.86077 7.03152
+[6,] 2.90173 2.38533 1.76174 3.23028 2.07454 4.40099 10.12834 3.87640 6.80088
+          λ10     λ11     λ12       μ     σ^2
+[1,] 29.06131 8.01244 6.94032 1.42823 0.90337
+[2,] 24.85536 8.38765 6.82949 1.46344 0.71434
+[3,] 26.83229 8.73036 5.94960 1.27629 0.88761
+[4,] 25.53980 7.69775 6.82758 1.70539 0.66579
+[5,] 26.01189 9.07609 7.09337 1.30736 1.00804
+[6,] 29.30472 7.20842 6.79573 1.68846 0.63991</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -803,10 +795,7 @@ Chaîne 1 terminée en 0.05 minutes.</code></pre>
 <span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a> <span class="co"># Ajout d'une ligne verticale pour représenter la moyenne (Mean)</span></span>
 <span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">mean</span>(λ_samples[burn_in<span class="sc">:</span>n_iter, i]), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Réinitialisation de la disposition graphique par défaut (1x1)</span></span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -814,6 +803,8 @@ Chaîne 1 terminée en 0.05 minutes.</code></pre>
 </figure>
 </div>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Réinitialisation de la disposition graphique par défaut (1x1)</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Les distributions postérieures des paramètres <span class="math inline">\(\lambda_1\)</span> à <span class="math inline">\(\lambda_{12}\)</span> montrent une augmentation progressive de l’intensité de présence du moustique tigre au cours du temps. Les estimations passent d’une faible valeur initiale (<span class="math inline">\(\lambda_1 \approx 2,5\)</span>) à un niveau beaucoup plus élevé vers l’année 10 (<span class="math inline">\(\lambda_{10} \approx 26,5\)</span>), mettant en évidence une forte variabilité inter-annuelle.</p>
 <p>Par ailleurs, les distributions deviennent plus concentrées au fil des années, ce qui traduit une diminution de l’incertitude et une amélioration de la précision des estimations grâce à des données plus abondantes.</p>
@@ -821,85 +812,87 @@ Chaîne 1 terminée en 0.05 minutes.</code></pre>
 <section id="estimateurs-ponctuels-et-des-intervalles-de-confiances-pour-chaque-parametre" class="level1" data-number="7">
 <h1 data-number="7"><span class="header-section-number">7</span> Estimateurs ponctuels et des intervalles de confiances pour chaque parametre</h1>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Eliminer 1000 premiere ligne </span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>clean_samples <span class="ot">&lt;-</span> samples_matrix[<span class="dv">1001</span><span class="sc">:</span><span class="dv">5000</span>, ]</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1.Posterior Mean)</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>post_mean <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(clean_samples)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Interval de confiances 95% (95% Credible Interval)</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>post_ci <span class="ot">&lt;-</span> <span class="fu">apply</span>(clean_samples, <span class="dv">2</span>, quantile, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Met dans un tableau </span></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">Parameter =</span> <span class="fu">colnames</span>(clean_samples),</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">Estimate =</span> post_mean,</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">CI_lower =</span> post_ci[<span class="dv">1</span>, ],</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">CI_upper =</span> post_ci[<span class="dv">2</span>, ]</span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Eliminer 1000 premiere ligne </span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>clean_samples <span class="ot">&lt;-</span> samples_matrix[<span class="dv">1001</span><span class="sc">:</span><span class="dv">5000</span>, ]</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1.Posterior Mean)</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>post_mean <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(clean_samples)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Interval de confiances 95% (95% Credible Interval)</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>post_ci <span class="ot">&lt;-</span> <span class="fu">apply</span>(clean_samples, <span class="dv">2</span>, quantile, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Met dans un tableau </span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">Parameter =</span> <span class="fu">colnames</span>(clean_samples),</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">Estimate =</span> post_mean,</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">CI_lower =</span> post_ci[<span class="dv">1</span>, ],</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">CI_upper =</span> post_ci[<span class="dv">2</span>, ]</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    Parameter   Estimate   CI_lower  CI_upper
-λ1         λ1  1.9310084  0.5211736  4.167386
-λ2         λ2  2.6559300  0.9985524  5.109228
-λ3         λ3  3.5648196  2.1489849  5.299386
-λ4         λ4 10.3572402  8.0727496 12.919419
-λ5         λ5  5.2760600  3.8520286  6.935709
-λ6         λ6  8.3722891  6.7393973 10.120515
-λ7         λ7 26.7476124 24.0477720 29.525586
-λ8         λ8  7.2043424  5.9176642  8.709489
-λ9         λ9  7.1430222  5.9437889  8.347608
-λ10       λ10  9.1045815  7.6549078 10.694375
-μ           μ  1.7883283  1.1449787  2.344608
-σ^2       σ^2  0.8956457  0.5250640  1.460685</code></pre>
+<pre><code>    Parameter  Estimate   CI_lower  CI_upper
+λ1         λ1  2.595188  0.6717871  5.702999
+λ2         λ2  1.915954  0.4013943  4.735973
+λ3         λ3  1.966777  0.3397732  5.111009
+λ4         λ4  1.567801  0.4355213  3.444184
+λ5         λ5  1.942655  0.6009258  4.046036
+λ6         λ6  3.444607  2.0429837  5.175769
+λ7         λ7 10.326771  8.0621939 12.899710
+λ8         λ8  5.157979  3.7684199  6.915044
+λ9         λ9  8.564633  6.9572531 10.348355
+λ10       λ10 26.643701 23.9859650 29.559000
+λ11       λ11  7.102151  5.8193101  8.542604
+λ12       λ12  6.811094  5.7274463  7.978633
+μ           μ  1.377365  0.7029029  1.990959
+σ^2       σ^2  1.032254  0.6485090  1.597945</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 7. Création du Forest Plot (Adapté à vos noms de colonnes)</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Préparation de l'ordre des paramètres</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co"># On utilise 'Parameter' car c'est le nom dans votre tableau results</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>results<span class="sc">$</span>Parameter <span class="ot">&lt;-</span> <span class="fu">factor</span>(results<span class="sc">$</span>Parameter, <span class="at">levels =</span> <span class="fu">rev</span>(results<span class="sc">$</span>Parameter))</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Génération du graphique Forest Plot</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(results, <span class="fu">aes</span>(<span class="at">x =</span> Parameter, <span class="at">y =</span> Estimate)) <span class="sc">+</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Barres d'erreur (on utilise CI_lower et CI_upper de votre tableau)</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> CI_lower, <span class="at">ymax =</span> CI_upper), </span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="fl">0.2</span>, </span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> <span class="st">"#E44A33"</span>, <span class="co"># Le rouge de l'image</span></span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span> </span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Points de la moyenne (on utilise Estimate de votre tableau)</span></span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"#2C3E50"</span>) <span class="sc">+</span> </span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Inversion des axes pour l'effet horizontal</span></span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
-<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Style visuel</span></span>
-<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
-<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Titres en français</span></span>
-<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Variabilité Inter-Annuelle des Occurrences (Paramètres λ)"</span>,</span>
-<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Moyenne a posteriori et Intervalles de crédibilité à 95%"</span>,</span>
-<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Effet aléatoire (Année)"</span>,</span>
-<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Nombre moyen d'occurrences estimé (λ)"</span></span>
-<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Esthétique du texte</span></span>
-<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">14</span>, <span class="at">hjust =</span> <span class="dv">0</span>),</span>
-<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">color =</span> <span class="st">"grey30"</span>),</span>
-<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">"italic"</span>),</span>
-<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>)</span>
-<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 7. Création du Forest Plot (Adapté à vos noms de colonnes)</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Préparation de l'ordre des paramètres</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co"># On utilise 'Parameter' car c'est le nom dans votre tableau results</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>results<span class="sc">$</span>Parameter <span class="ot">&lt;-</span> <span class="fu">factor</span>(results<span class="sc">$</span>Parameter, <span class="at">levels =</span> <span class="fu">rev</span>(results<span class="sc">$</span>Parameter))</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Génération du graphique Forest Plot</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(results, <span class="fu">aes</span>(<span class="at">x =</span> Parameter, <span class="at">y =</span> Estimate)) <span class="sc">+</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Barres d'erreur (on utilise CI_lower et CI_upper de votre tableau)</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> CI_lower, <span class="at">ymax =</span> CI_upper), </span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="fl">0.2</span>, </span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> <span class="st">"#E44A33"</span>, <span class="co"># Le rouge de l'image</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span> </span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Points de la moyenne (on utilise Estimate de votre tableau)</span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"#2C3E50"</span>) <span class="sc">+</span> </span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Inversion des axes pour l'effet horizontal</span></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Style visuel</span></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Titres en français</span></span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Variabilité Inter-Annuelle des Occurrences (Paramètres λ)"</span>,</span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Moyenne a posteriori et Intervalles de crédibilité à 95%"</span>,</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Effet aléatoire (Année)"</span>,</span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Nombre moyen d'occurrences estimé (λ)"</span></span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Esthétique du texte</span></span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">14</span>, <span class="at">hjust =</span> <span class="dv">0</span>),</span>
+<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">color =</span> <span class="st">"grey30"</span>),</span>
+<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">"italic"</span>),</span>
+<span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>)</span>
+<span id="cb23-44"><a href="#cb23-44" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -915,113 +908,113 @@ Chaîne 1 terminée en 0.05 minutes.</code></pre>
 <section id="analyser-la-qualité-prédictive-du-modèle." class="level1" data-number="8">
 <h1 data-number="8"><span class="header-section-number">8</span> Analyser la qualité prédictive du modèle.</h1>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Création de y_list : chaque élément de la liste est un vecteur contenant </span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># le nombre d'occurrences (moustiques) par province pour chaque année.</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>y_list <span class="ot">&lt;-</span> <span class="fu">split</span>(df<span class="sc">$</span>n_occurrences, df<span class="sc">$</span>i)</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Extraction des résultats de la Chaîne 1 (MCMC)</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>res_chain1 <span class="ot">&lt;-</span> all_results[[<span class="dv">1</span>]]</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Élimination de la période de chauffe (burn-in, ex: 1000 premières itérations)</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>burn_in <span class="ot">&lt;-</span> <span class="dv">1001</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>n_iter_total <span class="ot">&lt;-</span> <span class="fu">length</span>(res_chain1<span class="sc">$</span>mu)</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>indices_kept <span class="ot">&lt;-</span> burn_in<span class="sc">:</span>n_iter_total</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Création d'un dataframe contenant les valeurs de lambda_i (exp(Z_i))</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="co"># On transforme les échantillons de Z (espace log) en intensité réelle (lambda)</span></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>lambda_samples <span class="ot">&lt;-</span> <span class="fu">exp</span>(res_chain1<span class="sc">$</span>Z[indices_kept, ])</span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(lambda_samples) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"lambda_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(lambda_samples))</span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Conversion en structure dataframe pour faciliter les analyses PPC suivantes</span></span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>samples_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(lambda_samples)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Création de y_list : chaque élément de la liste est un vecteur contenant </span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># le nombre d'occurrences (moustiques) par province pour chaque année.</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>y_list <span class="ot">&lt;-</span> <span class="fu">split</span>(df<span class="sc">$</span>n_occurrences, df<span class="sc">$</span>i)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Extraction des résultats de la Chaîne 1 (MCMC)</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>res_chain1 <span class="ot">&lt;-</span> all_results[[<span class="dv">1</span>]]</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Élimination de la période de chauffe (burn-in, ex: 1000 premières itérations)</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>burn_in <span class="ot">&lt;-</span> <span class="dv">1001</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>n_iter_total <span class="ot">&lt;-</span> <span class="fu">length</span>(res_chain1<span class="sc">$</span>mu)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>indices_kept <span class="ot">&lt;-</span> burn_in<span class="sc">:</span>n_iter_total</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Création d'un dataframe contenant les valeurs de lambda_i (exp(Z_i))</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="co"># On transforme les échantillons de Z (espace log) en intensité réelle (lambda)</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>lambda_samples <span class="ot">&lt;-</span> <span class="fu">exp</span>(res_chain1<span class="sc">$</span>Z[indices_kept, ])</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(lambda_samples) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"lambda_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(lambda_samples))</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Conversion en structure dataframe pour faciliter les analyses PPC suivantes</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>samples_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(lambda_samples)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 1. Préparation des données observées (Réalité) ---</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">unlist</span>(y_list) <span class="co"># Liste des occurrences observées par an</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>stat_obs_zero <span class="ot">&lt;-</span> <span class="fu">mean</span>(y_obs <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Proportion réelle de zéros</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>stat_obs_max  <span class="ot">&lt;-</span> <span class="fu">max</span>(y_obs)       <span class="co"># Valeur maximale réelle observée</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 2. Configuration de la simulation ---</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>n_samples_ppc <span class="ot">&lt;-</span> <span class="dv">1000</span> </span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>) <span class="co"># Pour la reproductibilité</span></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>indices_ppc <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(samples_df), n_samples_ppc)</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>rep_stat_zero <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n_samples_ppc)</span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>rep_stat_max  <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n_samples_ppc)</span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>I <span class="ot">&lt;-</span> <span class="fu">length</span>(y_list) <span class="co"># Nombre d'années (12)</span></span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>J_list <span class="ot">&lt;-</span> <span class="fu">sapply</span>(y_list, length) <span class="co"># Nombre de sites par année</span></span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Génération des données prédictives a posteriori en cours...</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 1. Préparation des données observées (Réalité) ---</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>y_obs <span class="ot">&lt;-</span> <span class="fu">unlist</span>(y_list) <span class="co"># Liste des occurrences observées par an</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>stat_obs_zero <span class="ot">&lt;-</span> <span class="fu">mean</span>(y_obs <span class="sc">==</span> <span class="dv">0</span>) <span class="co"># Proportion réelle de zéros</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>stat_obs_max  <span class="ot">&lt;-</span> <span class="fu">max</span>(y_obs)       <span class="co"># Valeur maximale réelle observée</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 2. Configuration de la simulation ---</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>n_samples_ppc <span class="ot">&lt;-</span> <span class="dv">1000</span> </span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>) <span class="co"># Pour la reproductibilité</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>indices_ppc <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(samples_df), n_samples_ppc)</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>rep_stat_zero <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n_samples_ppc)</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>rep_stat_max  <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n_samples_ppc)</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>I <span class="ot">&lt;-</span> <span class="fu">length</span>(y_list) <span class="co"># Nombre d'années (12)</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>J_list <span class="ot">&lt;-</span> <span class="fu">sapply</span>(y_list, length) <span class="co"># Nombre de sites par année</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Génération des données prédictives a posteriori en cours...</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Génération des données prédictives a posteriori en cours...</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 3. Boucle de simulation des données répliquées (y_rep) ---</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_samples_ppc) {</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    idx <span class="ot">&lt;-</span> indices_ppc[t]</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    y_rep_t <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">0</span>)</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>I) {</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Extraction du lambda pour l'année i à l'itération t</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        lambda_i_t <span class="ot">&lt;-</span> samples_df[idx, <span class="fu">paste0</span>(<span class="st">"lambda_"</span>, i)]</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Simulation de nouvelles observations selon la loi de Poisson</span></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># J_list[i] représente l'effort d'échantillonnage de l'année i</span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>        y_rep_t <span class="ot">&lt;-</span> <span class="fu">c</span>(y_rep_t, <span class="fu">rpois</span>(J_list[i], <span class="at">lambda =</span> lambda_i_t))</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calcul des statistiques sur les données simulées</span></span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>    rep_stat_zero[t] <span class="ot">&lt;-</span> <span class="fu">mean</span>(y_rep_t <span class="sc">==</span> <span class="dv">0</span>)</span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>    rep_stat_max[t]  <span class="ot">&lt;-</span> <span class="fu">max</span>(y_rep_t)</span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 4. Calcul des P-values bayésiennes ---</span></span>
-<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Si la p-value est proche de 0.5, le modèle est bien ajusté.</span></span>
-<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>p_val_zero <span class="ot">&lt;-</span> <span class="fu">mean</span>(rep_stat_zero <span class="sc">&gt;=</span> stat_obs_zero)</span>
-<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>p_val_max  <span class="ot">&lt;-</span> <span class="fu">mean</span>(rep_stat_max <span class="sc">&gt;=</span> stat_obs_max)</span>
-<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"P-value bayésienne (Proportion de zéros) : %.3f</span><span class="sc">\n</span><span class="st">"</span>, p_val_zero))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 3. Boucle de simulation des données répliquées (y_rep) ---</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_samples_ppc) {</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    idx <span class="ot">&lt;-</span> indices_ppc[t]</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    y_rep_t <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">0</span>)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>I) {</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Extraction du lambda pour l'année i à l'itération t</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>        lambda_i_t <span class="ot">&lt;-</span> samples_df[idx, <span class="fu">paste0</span>(<span class="st">"lambda_"</span>, i)]</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Simulation de nouvelles observations selon la loi de Poisson</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># J_list[i] représente l'effort d'échantillonnage de l'année i</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>        y_rep_t <span class="ot">&lt;-</span> <span class="fu">c</span>(y_rep_t, <span class="fu">rpois</span>(J_list[i], <span class="at">lambda =</span> lambda_i_t))</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calcul des statistiques sur les données simulées</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>    rep_stat_zero[t] <span class="ot">&lt;-</span> <span class="fu">mean</span>(y_rep_t <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>    rep_stat_max[t]  <span class="ot">&lt;-</span> <span class="fu">max</span>(y_rep_t)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 4. Calcul des P-values bayésiennes ---</span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Si la p-value est proche de 0.5, le modèle est bien ajusté.</span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>p_val_zero <span class="ot">&lt;-</span> <span class="fu">mean</span>(rep_stat_zero <span class="sc">&gt;=</span> stat_obs_zero)</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>p_val_max  <span class="ot">&lt;-</span> <span class="fu">mean</span>(rep_stat_max <span class="sc">&gt;=</span> stat_obs_max)</span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"P-value bayésienne (Proportion de zéros) : %.3f</span><span class="sc">\n</span><span class="st">"</span>, p_val_zero))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P-value bayésienne (Proportion de zéros) : 1.000</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"P-value bayésienne (Maximum observé) : %.3f</span><span class="sc">\n</span><span class="st">"</span>, p_val_max))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"P-value bayésienne (Maximum observé) : %.3f</span><span class="sc">\n</span><span class="st">"</span>, p_val_max))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>P-value bayésienne (Maximum observé) : 0.000</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 5. Visualisation graphique ---</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>ppc_long <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">Valeur =</span> <span class="fu">c</span>(rep_stat_zero, rep_stat_max),</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Statistique =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"1. Proportion de sites sans moustiques (Zéro)"</span>, </span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"2. Pire Invasion (Maximum observé)"</span>), </span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">each =</span> n_samples_ppc)</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>obs_lines <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Valeur_obs =</span> <span class="fu">c</span>(stat_obs_zero, stat_obs_max),</span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Statistique =</span> <span class="fu">c</span>(<span class="st">"1. Proportion de sites sans moustiques (Zéro)"</span>, </span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"2. Pire Invasion (Maximum observé)"</span>)</span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>ppc_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppc_long, <span class="fu">aes</span>(<span class="at">x =</span> Valeur)) <span class="sc">+</span></span>
-<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"#95A5A6"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">data =</span> obs_lines, <span class="fu">aes</span>(<span class="at">xintercept =</span> Valeur_obs), </span>
-<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"#E74C3C"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span> Statistique, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
-<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
-<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Vérification Prédictive a Posteriori (PPC)"</span>,</span>
-<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"L'histogramme gris représente les prédictions du modèle. La ligne rouge est la réalité observée."</span>,</span>
-<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">"Valeur de la statistique"</span>,</span>
-<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Fréquence"</span></span>
-<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
-<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#EFEFEF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
-<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">10</span>)</span>
-<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ppc_plot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 5. Visualisation graphique ---</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>ppc_long <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">Valeur =</span> <span class="fu">c</span>(rep_stat_zero, rep_stat_max),</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Statistique =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"1. Proportion de sites sans moustiques (Zéro)"</span>, </span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"2. Pire Invasion (Maximum observé)"</span>), </span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">each =</span> n_samples_ppc)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>obs_lines <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Valeur_obs =</span> <span class="fu">c</span>(stat_obs_zero, stat_obs_max),</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Statistique =</span> <span class="fu">c</span>(<span class="st">"1. Proportion de sites sans moustiques (Zéro)"</span>, </span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"2. Pire Invasion (Maximum observé)"</span>)</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>ppc_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppc_long, <span class="fu">aes</span>(<span class="at">x =</span> Valeur)) <span class="sc">+</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"#95A5A6"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">data =</span> obs_lines, <span class="fu">aes</span>(<span class="at">xintercept =</span> Valeur_obs), </span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"#E74C3C"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span> Statistique, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Vérification Prédictive a Posteriori (PPC)"</span>,</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="st">"L'histogramme gris représente les prédictions du modèle. La ligne rouge est la réalité observée."</span>,</span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">"Valeur de la statistique"</span>,</span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Fréquence"</span></span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#EFEFEF"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">10</span>)</span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ppc_plot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">

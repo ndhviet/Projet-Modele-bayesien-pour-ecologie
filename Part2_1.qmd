@@ -46,21 +46,13 @@ library(rgbif)
 library(dplyr)
 library(sf)
 library(maps)
-
-tigre_moustique_data <- occ_search(
-  scientificName = "Aedes albopictus",
-  country = "FR",
-  limit = 2210,
-)$data
+library(readr)
 
 # ------------------------------------------------------------------------------
 #                   RESUME DES DONNÉES
 # ------------------------------------------------------------------------------
-summary_table <- tigre_moustique_data %>%
-  filter(!is.na(year), !is.na(stateProvince)) %>%  
-  group_by(year, stateProvince) %>%                 
-  summarise(n_occurrences = n(), .groups = "drop") 
 
+summary_table<- read_csv("data/summary_tigre_moustique.csv", show_col_types = FALSE)
 df <- summary_table
 df$i <- as.integer(factor(df$year))
 df$j <- as.integer(factor(df$stateProvince))
