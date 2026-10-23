@@ -40,6 +40,12 @@ projet-bayes-moustique/
 └── model1.png              # Illustrations des modèles
 └── model2.png
 ```
+## Réalisé par
+
+| Membre | Contact |
+|---|---|
+| **Duc Hoang Viet NGUYEN** | [ndhviet.github.io](https://ndhviet.github.io/) |
+| **Yvan Michel TCHONANG** | [michel-tchonang.lovable.app](https://michel-tchonang.lovable.app/) |
 
 
 # Présentation du projet
