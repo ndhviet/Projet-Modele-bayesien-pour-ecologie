@@ -46,6 +46,25 @@ Le but est d’analyser la variabilité inter-site et intra-site des occurrences
 
 > **Note importante :** pour que la Méthode 2 fonctionne, le fichier de code doit être placé dans le même répertoire racine que le dossier `data`, afin d'accéder directement à `summary_tigre_moustique.csv`.
 
+## 3. Structure du projet
+
+```text
+projet-bayes-moustique/
+├── _quarto.yml      # Configuration du site Quarto
+├── index.qmd        # Page d'accueil
+├── Part1.qmd        # Extraction et pré-traitement
+├── Part2_1.qmd      # Génération par blocs
+├── Part2_2.qmd      # Génération du vecteur θ
+├── Part3.qmd        # Modèle extension
+├── Rapport.pdf      # Rapport final
+├── data/            # summary_tigre_moustique.csv
+├── docs/            # Site web généré
+├── images/          # Dashboard
+├── model1.png       # Illustrations des modèles
+├── model2.png
+└── README.md
+```
+
 ## Consulter le rapport complet
 
 Vous pouvez consulter le rapport détaillé du projet (format PDF) en cliquant sur le lien ci-dessous :
@@ -82,29 +101,6 @@ L'objectif est d'analyser la variabilité inter-site et intra-site des occurrenc
 
 ---
 
-
----
-
-## 3. Structure du projet
-
-```text
-projet-bayes-moustique/
-├── _quarto.yml      # Configuration du site Quarto
-├── index.qmd        # Page d'accueil
-├── Part1.qmd        # Extraction et pré-traitement
-├── Part2_1.qmd      # Génération par blocs
-├── Part2_2.qmd      # Génération du vecteur θ
-├── Part3.qmd        # Modèle extension
-├── Rapport.pdf      # Rapport final
-├── data/            # summary_tigre_moustique.csv
-├── docs/            # Site web généré
-├── images/          # Dashboard
-├── model1.png       # Illustrations des modèles
-├── model2.png
-└── README.md
-```
-
----
 
 ## 4. Réalisé par
 
