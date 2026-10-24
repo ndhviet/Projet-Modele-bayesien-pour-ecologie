@@ -76,13 +76,4 @@ Vous pouvez consulter le rapport détaillé du projet (format PDF) en cliquant s
 
 ➡️ Cliquez sur l'image pour ouvrir le dashboard interactif.
 
-
-## 1. Présentation du projet
-
-Ce projet modélise la présence du moustique tigre (*Aedes albopictus*) en France métropolitaine à partir de données d'occurrences, disponibles par exemple sur [GBIF](https://www.gbif.org/) (Global Biodiversity Information Facility).
-
-L'objectif est d'analyser la variabilité inter-site et intra-site des occurrences à l'aide d'un modèle hiérarchique bayésien.
-
-📄 [Ouvrir le rapport PDF](https://ndhviet.github.io/Projet-Modele-bayesien-pour-ecologie/Rapport.pdf)
-
 ---
