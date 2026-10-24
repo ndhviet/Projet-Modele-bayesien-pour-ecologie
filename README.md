@@ -83,6 +83,10 @@ Vous pouvez consulter le rapport détaillé du projet (format PDF) en cliquant s
 
 <a href="Rapport.pdf" target="_blank" style="font-weight: bold; text-decoration: underline;">  Ouvrir le rapport PDF  </a>
 
+<a href="https://ndhviet.github.io/Projet-Modele-bayesien-pour-ecologie/Rapport.pdf" target="_blank" style="font-weight: bold; text-decoration: underline;">  Ouvrir le rapport PDF  </a>
+
+[**Ouvrir le rapport PDF**](https://ndhviet.github.io/Projet-Modele-bayesien-pour-ecologie/Rapport.pdf)
+
 ### Dashboard interactif
 
 [![Dashboard](images/dashboard_bayes.png)](https://ndhviet.github.io/Projet-Modele-bayesien-pour-ecologie/images/dashboard_moustique.html)
