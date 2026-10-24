@@ -1,6 +1,7 @@
 project:
   type: website
   output-dir: docs  # pour Github pages
+  execute-dir: project
 
 website:
   title: "Projet Model hiérarchique bayesien pour l'écologie"
@@ -9,13 +10,13 @@ website:
     left:
       - href: index.qmd
         text: Accueil
-      - href: Part1.qmd
+      - href: chapters/Part1.qmd
         text: "Extraction des données "
-      - href: Part2_1.qmd
+      - href: chapters/Part2_1.qmd
         text: "Modèle version 1"
-      - href: Part2_2.qmd
+      - href: chapters/Part2_2.qmd
         text: "Modèle version 2"
-      - href: Part3.qmd
+      - href: chapters/Part3.qmd
         text: "Modèle Extension "
         
     right:
@@ -32,8 +33,8 @@ website:
 format:
   html:
     theme: flatly
-    css: custom.css
-    include-after-body: [loading.html, footer.html]
+    css: assets/custom.css
+    include-after-body: [assets/loading.html, assets/footer.html]
     toc: true
     toc-location: right
     toc-title: "Sur cette page" 
