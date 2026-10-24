@@ -18,28 +18,6 @@
 </div>
 <br>
 
-# 
-
-# Structure du projet
-
-```text
-projet-bayes-moustique/
-├── _quarto.yml             # Fichier de configuration du site Quarto
-├── index.qmd               # Page d'accueil du site
-├── Part1.qmd               # Partie 1 : Extraction et pré-traitement
-├── Part2_1.qmd             # Partie 2 (v1) : Génération par blocs
-├── Part2_2.qmd             # Partie 2 (v2) : Génération du vecteur θ
-├── Part3.qmd               # Partie 3 : Modèle extension
-├── Rapport.pdf             # Rapport final en version PDF
-├── README.md               # Présentation du dépôt GitHub
-├── .gitignore              # Fichiers à exclure du suivi Git
-├── data/                   # Données brutes et fichiers CSV
-│   └── summary_tigre_moustique.csv
-├── docs/                   # Site web généré (fichiers HTML, CSS, js)
-│   └── index.html
-└── model1.png              # Illustrations des modèles
-└── model2.png
-```
 ## Réalisé par
 
 | Membre | Contact |
