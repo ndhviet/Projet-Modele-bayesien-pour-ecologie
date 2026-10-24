@@ -26,7 +26,7 @@
 | **Yvan Michel TCHONANG** | [michel-tchonang.lovable.app](https://michel-tchonang.lovable.app/) |
 
 
-# Présentation du projet
+## 1. Présentation du projet
 
 On s’intéresse dans ce projet à la modélisation de la présence du moustique tigre (*Aedes albopictus*) en France métropolitaine.
 
@@ -35,6 +35,8 @@ Pour cela, on dispose de données d’occurrences du moustique tigre, que l’on
 Le but est d’analyser la variabilité inter-site et intra-site des occurrences, en utilisant un modèle hiérarchique bayésien.
 
 📄 [Ouvrir le rapport PDF](https://ndhviet.github.io/Projet-Modele-bayesien-pour-ecologie/Rapport.pdf)
+
+## 2. Organisation du projet
 
 Le projet est divisé en plusieurs parties :
 
