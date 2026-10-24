@@ -18,13 +18,18 @@
 </div>
 <br>
 
-## Réalisé par
+
+
+<h2 align="center">Réalisé par</h2>
+
+<div align="center">
 
 | Membre | Contact |
 |---|---|
 | **Duc Hoang Viet NGUYEN** | [ndhviet.github.io](https://ndhviet.github.io/) |
 | **Yvan Michel TCHONANG** | [michel-tchonang.lovable.app](https://michel-tchonang.lovable.app/) |
 
+</div>
 
 ## 1. Présentation du projet
 
