@@ -34,6 +34,8 @@ Pour cela, on dispose de données d’occurrences du moustique tigre, que l’on
 
 Le but est d’analyser la variabilité inter-site et intra-site des occurrences, en utilisant un modèle hiérarchique bayésien.
 
+📄 [Ouvrir le rapport PDF](https://ndhviet.github.io/Projet-Modele-bayesien-pour-ecologie/Rapport.pdf)
+
 Le projet est divisé en plusieurs parties :
 
 -   **Partie 1 :** Extraction des données et pré-traitement
