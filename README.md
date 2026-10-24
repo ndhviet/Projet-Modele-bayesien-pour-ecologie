@@ -38,8 +38,6 @@ Le but est d’analyser la variabilité inter-site et intra-site des occurrences
 
 ## 2. Organisation du projet
 
-Le projet est divisé en plusieurs parties :
-
 -   **Partie 1 :** Extraction des données et pré-traitement
 
     Cette partie est dédiée à l’extraction des données, au nettoyage des valeurs manquantes et à la visualisation initiale pour comprendre la distribution de *Aedes albopictus*.
