@@ -30,7 +30,7 @@
 
 On s’intéresse dans ce projet à la modélisation de la présence du moustique tigre (*Aedes albopictus*) en France métropolitaine.
 
-Pour cela, on dispose de données d’occurrences du moustique tigre, que l’on peut trouver par exemple sur le site de GBIF (Global Biodiversity Information Facility, <https://www.gbif.org/>).
+Pour cela, on dispose de données d’occurrences du moustique tigre, que l’on peut trouver par exemple sur le site de GBIF (Global Biodiversity Information Facility, [GBIF](https://www.gbif.org/) .
 
 Le but est d’analyser la variabilité inter-site et intra-site des occurrences, en utilisant un modèle hiérarchique bayésien.
 
@@ -65,31 +65,18 @@ projet-bayes-moustique/
 └── README.md
 ```
 
-## Consulter le rapport complet
+## 4. Consulter le rapport complet
 
 Vous pouvez consulter le rapport détaillé du projet (format PDF) en cliquant sur le lien ci-dessous :
 
 <a href="https://ndhviet.github.io/Projet-Modele-bayesien-pour-ecologie/Rapport.pdf" target="_blank" style="font-weight: bold; text-decoration: underline;">  Ouvrir le rapport PDF  </a>
 
-### Dashboard interactif
+## 5. Dashboard interactif
 
 [![Dashboard](images/dashboard_bayes.png)](https://ndhviet.github.io/Projet-Modele-bayesien-pour-ecologie/images/dashboard_moustique.html)
 
 ➡️ Cliquez sur l'image pour ouvrir le dashboard interactif.
 
-
-<div align="center">
-  <h1>Moustique Tigre</h1>
-  <p><em>Modèle Bayésien Hiérarchique pour la prédiction spatio-temporelle</em></p>
-
-  <a href="#"><img src="https://img.shields.io/badge/R-4.5-276DC3?logo=r&logoColor=white&style=flat-square"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Bayesian-Spatio--Temporal%20Model-orange?style=flat-square"></a>
-  <a href="#"><img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square"></a>
-  <a href="https://ndhviet.github.io/Projet_Modele_hierarchique_bayesien_pour_ecologie/">
-    <img src="https://img.shields.io/badge/Demo-Live%20Website-brightgreen?style=for-the-badge&logo=googlechrome&logoColor=white">
-  </a>
-</div>
-<br>
 
 ## 1. Présentation du projet
 
@@ -100,19 +87,3 @@ L'objectif est d'analyser la variabilité inter-site et intra-site des occurrenc
 📄 [Ouvrir le rapport PDF](https://ndhviet.github.io/Projet-Modele-bayesien-pour-ecologie/Rapport.pdf)
 
 ---
-
-
-## 4. Réalisé par
-
-| Membre | Contact |
-|---|---|
-| **Duc Hoang Viet NGUYEN** | [ndhviet.github.io](https://ndhviet.github.io/) |
-| **Yvan Michel TCHONANG** | [michel-tchonang.lovable.app](https://michel-tchonang.lovable.app/) |
-
----
-
-## 5. Dashboard interactif
-
-[![Dashboard](images/dashboard_bayes.png)](https://ndhviet.github.io/Projet-Modele-bayesien-pour-ecologie/images/dashboard_moustique.html)
-
-➡️ Cliquez sur l'image pour ouvrir le dashboard interactif.
